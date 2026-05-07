@@ -1,0 +1,15 @@
+# 局部代价地图（用于实时避障与局部规划）
+local_costmap:
+  global_frame: odom
+  robot_base_frame: base_footprint
+
+  update_frequency: 5.0       # 地图更新频率 (Hz)
+  publish_frequency: 2.0      # 地图发布频率 (Hz)
+
+  static_map: false           # 局部地图不使用静态地图
+  rolling_window: true        # 滚动窗口，随机器人移动
+  width: 4.0                  # 窗口宽度 (m)
+  height: 4.0                 # 窗口高度 (m)
+  resolution: 0.05            # 栅格分辨率 (m/cell)
+
+  transform_tolerance: 0.5    # TF 变换容忍时间 (s)

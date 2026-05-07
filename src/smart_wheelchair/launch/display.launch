@@ -1,0 +1,13 @@
+<launch>
+  <!-- 加载 Xacro 模型 -->
+  <param name="robot_description" command="$(find xacro)/xacro $(find smart_wheelchair)/urdf/wheelchair.xacro" />
+
+  <!-- 启动关节状态发布器（GUI 可调） -->
+  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
+
+  <!-- 启动机器人状态发布器（TF） -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+  <!-- 启动 RViz -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find smart_wheelchair)/config/wheelchair.rviz" />
+</launch>

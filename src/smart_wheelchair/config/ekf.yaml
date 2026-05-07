@@ -1,0 +1,36 @@
+# odom_config.yaml
+# 为 robot_localization 配置的 EKF 参数
+frequency: 30
+sensor_timeout: 0.1
+two_d_mode: true
+publish_tf: false # 重新禁用 EKF 的 TF，让 Gazebo 回归原始状态
+transform_time_offset: 0.05
+transform_timeout: 0.0
+print_diagnostics: true
+debug: false
+
+# map_frame: map
+odom_frame: odom
+base_link_frame: base_footprint
+world_frame: odom
+
+# 轮式里程计输入
+odom0: /odom_raw
+odom0_config: [false, false, false, # x, y, z
+               false, false, false, # r, p, y
+               true,  true,  false, # vx, vy, vz
+               false, false, true,  # vr, vp, vy
+               false, false, false] # ax, ay, az
+odom0_differential: false
+odom0_relative: false
+
+# IMU 输入
+imu0: /imu
+imu0_config: [false, false, false,
+              false, false, true,  # 仅融合偏航角 (yaw)
+              false, false, false,
+              false, false, true,  # 仅融合角速度 (yaw rate)
+              true,  false, false] # 融合加速度 (x)
+imu0_differential: false
+imu0_relative: false # 修改为 false，IMU 通常提供绝对航向增量，不需要设为相对
+imu0_remove_gravitational_acceleration: true

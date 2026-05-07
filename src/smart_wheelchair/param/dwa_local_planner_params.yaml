@@ -1,0 +1,45 @@
+# DWA 局部路径规划器参数
+# 适配差速驱动轮椅，Y 方向速度为 0
+
+DWALocalPlannerROS:
+  # 速度约束
+  max_vel_x: 0.5              # 最大线速度 (m/s)
+  min_vel_x: 0.05             # 最小线速度 (m/s)，差速车不能后退可设为 0 或负值
+  max_vel_y: 0.0              # 差速车无侧向速度
+  min_vel_y: 0.0
+
+  max_vel_trans: 0.5          # 最大平移速度 (m/s)
+  min_vel_trans: 0.05         # 最小平移速度 (m/s)
+  max_vel_theta: 1.0          # 最大角速度 (rad/s)
+  min_vel_theta: -1.0         # 最小角速度 (rad/s)
+
+  # 加速度约束
+  acc_lim_x: 1.0              # X 方向最大加速度 (m/s^2)
+  acc_lim_y: 0.0              # Y 方向无加速度
+  acc_lim_theta: 2.0          # 角加速度限制 (rad/s^2)
+
+  # 目标容忍
+  yaw_goal_tolerance: 0.15    # 到达目标时的角度误差容忍 (rad)
+  xy_goal_tolerance: 0.15     # 到达目标时的位置误差容忍 (m)
+  latch_xy_goal_tolerance: false
+
+  # 仿真参数
+  sim_time: 2.0               # 前向仿真时间 (s)
+  vx_samples: 6               # X 方向速度采样数
+  vy_samples: 1               # Y 方向速度采样数（差速车为 1）
+  vtheta_samples: 20          # 角速度采样数
+  controller_frequency: 10.0  # 控制器频率 (Hz)
+
+  # 轨迹评分权重
+  path_distance_bias: 32.0    # 贴近全局路径的权重
+  goal_distance_bias: 24.0    # 靠近目标的权重
+  occdist_scale: 0.01         # 避障权重（越小越敢于靠近障碍物）
+
+  forward_point_distance: 0.325  # 前向预测点距离
+  stop_time_buffer: 0.2       # 停止时间缓冲
+  scaling_speed: 0.25         # 缩放速度
+  max_scaling_factor: 0.2     # 最大缩放因子
+
+  # 可视化
+  publish_cost_grid_pc: true
+  publish_traj_pc: true

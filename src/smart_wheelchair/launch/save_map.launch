@@ -1,0 +1,6 @@
+<launch>
+  <!-- 一键保存当前地图（在 SLAM 运行时执行） -->
+  <arg name="filename" default="$(find smart_wheelchair)/maps/bighouse"/>
+  <node name="map_saver" pkg="map_server" type="map_saver"
+        args="-f $(arg filename)" />
+</launch>

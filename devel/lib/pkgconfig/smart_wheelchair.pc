@@ -1,0 +1,8 @@
+prefix=/home/soyorin/wheelchair_ws/devel
+
+Name: smart_wheelchair
+Description: Description of smart_wheelchair
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

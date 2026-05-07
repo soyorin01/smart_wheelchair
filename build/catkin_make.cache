@@ -1,0 +1,2 @@
+smart_wheelchair
+-DCATKIN_DEVEL_PREFIX=/home/soyorin/wheelchair_ws/devel -DCMAKE_INSTALL_PREFIX=/home/soyorin/wheelchair_ws/install -G Unix Makefiles

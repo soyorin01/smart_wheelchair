@@ -1,0 +1,26 @@
+<launch>
+  <!-- 设置 Gazebo 模型路径，包含用户的房子 -->
+  <env name="GAZEBO_MODEL_PATH" value="$(optenv GAZEBO_MODEL_PATH /usr/share/gazebo-11/models):/home/soyorin/bighouse" />
+
+  <!-- 启动 Gazebo，加载 bighouse 世界 -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find smart_wheelchair)/worlds/bighouse.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <!-- 加载轮椅 Xacro 模型 -->
+  <param name="robot_description" command="$(find xacro)/xacro $(find smart_wheelchair)/urdf/wheelchair.xacro" />
+
+  <!-- 在 Gazebo 中生成机器人 -->
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+        args="-param robot_description -urdf -model smart_wheelchair
+              -x 0.3 -y 0.3 -z 0.1" />
+
+  <!-- 发布 TF 变换 -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+</launch>

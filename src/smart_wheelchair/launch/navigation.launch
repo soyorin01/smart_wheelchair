@@ -1,0 +1,37 @@
+<launch>
+  <!-- 启动仿真环境（Gazebo + bighouse + 轮椅） -->
+  <include file="$(find smart_wheelchair)/launch/sim_env.launch" />
+
+  <!-- 加载已保存的地图（默认路径） -->
+  <arg name="map_file" default="$(find smart_wheelchair)/maps/bighouse.yaml"/>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+  <!-- AMCL：自适应蒙特卡洛定位 -->
+  <node pkg="amcl" type="amcl" name="amcl" output="screen">
+    <rosparam file="$(find smart_wheelchair)/param/amcl_params.yaml" command="load" />
+    <param name="base_frame_id" value="base_footprint"/>
+    <param name="odom_frame_id" value="odom"/>
+    <param name="global_frame_id" value="map"/>
+  </node>
+
+  <!-- move_base：导航核心（全局/局部规划 + 代价地图） -->
+  <node pkg="move_base" type="move_base" name="move_base" output="screen">
+    <rosparam file="$(find smart_wheelchair)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find smart_wheelchair)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find smart_wheelchair)/param/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find smart_wheelchair)/param/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find smart_wheelchair)/param/move_base_params.yaml" command="load" />
+    <rosparam file="$(find smart_wheelchair)/param/dwa_local_planner_params.yaml" command="load" />
+
+    <param name="base_global_planner" value="global_planner/GlobalPlanner" />
+    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+    <param name="global_costmap/global_frame" value="map" />
+    <param name="global_costmap/robot_base_frame" value="base_footprint" />
+    <param name="local_costmap/global_frame" value="odom" />
+    <param name="local_costmap/robot_base_frame" value="base_footprint" />
+  </node>
+
+  <!-- RViz：加载导航专用配置 -->
+  <node name="rviz" pkg="rviz" type="rviz"
+        args="-d $(find smart_wheelchair)/config/nav.rviz" />
+</launch>

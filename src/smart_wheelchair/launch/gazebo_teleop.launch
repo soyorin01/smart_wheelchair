@@ -1,0 +1,8 @@
+<launch>
+  <!-- 启动 Gazebo 仿真（复用原有配置） -->
+  <include file="$(find smart_wheelchair)/launch/gazebo.launch" />
+
+  <!-- 启动键盘遥控节点 -->
+  <node name="teleop_keyboard" pkg="smart_wheelchair" type="teleop_keyboard.py"
+        output="screen" launch-prefix="" />
+</launch>

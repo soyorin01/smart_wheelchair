@@ -1,0 +1,18 @@
+# 全局代价地图（用于全局路径规划）
+global_costmap:
+  global_frame: map
+  robot_base_frame: base_footprint
+
+  update_frequency: 2.0       # 地图更新频率 (Hz)
+  publish_frequency: 1.0      # 地图发布频率 (Hz)
+
+  static_map: true            # 使用静态地图（SLAM 建图结果）
+  rolling_window: false       # 不滚动，覆盖整个环境
+
+  width: 40.0                 # 地图宽度 (m)
+  height: 40.0                # 地图高度 (m)
+  resolution: 0.05            # 栅格分辨率 (m/cell)
+  origin_x: -20.0             # 地图原点 X
+  origin_y: -20.0             # 地图原点 Y
+
+  transform_tolerance: 0.5    # TF 变换容忍时间 (s)

@@ -1,0 +1,28 @@
+<launch>
+  <!-- 加载 Xacro 模型到参数服务器 -->
+  <param name="robot_description" command="$(find xacro)/xacro $(find smart_wheelchair)/urdf/wheelchair.xacro" />
+
+  <!-- 启动 Gazebo 仿真环境（空世界） -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <!-- 在 Gazebo 中生成机器人 -->
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+        args="-param robot_description -urdf -model smart_wheelchair
+              -x 0 -y 0 -z 0.1" />
+
+  <!-- 发布 TF 变换 -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+  <!-- 启动 robot_localization 进行 EKF 融合，修正里程计偏移 -->
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
+    <rosparam command="load" file="$(find smart_wheelchair)/config/ekf.yaml" />
+    <!-- 最终输出稳定的 odom 话题 -->
+    <remap from="odometry/filtered" to="odom"/>
+  </node>
+</launch>

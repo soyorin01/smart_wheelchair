@@ -1,0 +1,47 @@
+# AMCL 自适应蒙特卡洛定位参数
+min_particles: 500
+max_particles: 3000
+kld_err: 0.02
+kld_z: 0.99
+
+update_min_d: 0.1             # 减小触发定位更新的位移（从0.2改为0.1）
+update_min_a: 0.1             # 减小触发定位更新的角度（从0.5改为0.1），使其在小幅转动时也能立即矫正
+resample_interval: 1
+transform_tolerance: 0.1
+
+recovery_alpha_slow: 0.0
+recovery_alpha_fast: 0.0
+
+# 初始位姿（假设从原点出发）
+initial_pose_x: 0.0
+initial_pose_y: 0.0
+initial_pose_a: 0.0
+initial_cov_xx: 0.25
+initial_cov_yy: 0.25
+initial_cov_aa: 0.06854
+
+gui_publish_rate: 10.0
+save_pose_rate: 0.5
+
+use_map_topic: true
+first_map_only: false
+
+# 激光模型参数
+laser_min_range: 0.1
+laser_max_range: 10.0
+laser_max_beams: 180
+laser_z_hit: 0.95              # 增加匹配权重
+laser_z_short: 0.05
+laser_z_max: 0.05
+laser_z_rand: 0.05              # 减少随机噪声干扰
+laser_sigma_hit: 0.1            # 让匹配更精准，不那么宽容
+laser_lambda_short: 0.1
+laser_model_type: likelihood_field
+
+# 里程计模型参数（差速模型 - 进一步降低旋转对定位的干扰）
+odom_model_type: diff
+odom_alpha1: 0.01               # 降低：旋转运动对平移的影响 (默认0.2)
+odom_alpha2: 0.01               # 降低：平移运动对旋转的影响
+odom_alpha3: 0.05               # 基准平移误差
+odom_alpha4: 0.01               # 降低：旋转运动对旋转的影响，防止转弯时位姿剧烈抖动
+

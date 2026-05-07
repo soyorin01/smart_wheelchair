@@ -1,0 +1,37 @@
+<launch>
+  <!-- 加载 Xacro 模型到参数服务器 -->
+  <param name="robot_description" command="$(find xacro)/xacro $(find smart_wheelchair)/urdf/wheelchair.xacro" />
+
+  <!-- 启动 Gazebo 仿真环境（空世界） -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <!-- 在 Gazebo 中生成机器人 -->
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+        args="-param robot_description -urdf -model smart_wheelchair
+              -x 0 -y 0 -z 0.1" />
+
+  <!-- 发布 TF 变换（URDF 中所有 link/joint 的坐标关系） -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+  <!-- 启动 PCL 点云处理节点：滤波 + 地面分割 + 聚类 -->
+  <node name="pcl_process_node" pkg="smart_wheelchair" type="pcl_process_node"
+        output="screen" launch-prefix="">
+    <param name="voxel_leaf_size" value="0.02"/>
+    <param name="pass_z_min" value="0.05"/>
+    <param name="pass_z_max" value="3.0"/>
+    <param name="seg_distance_thresh" value="0.05"/>
+    <param name="cluster_tolerance" value="0.05"/>
+    <param name="cluster_min_size" value="50"/>
+    <param name="cluster_max_size" value="50000"/>
+  </node>
+
+  <!-- 启动 RViz，加载带有点云与图像显示的配置 -->
+  <node name="rviz" pkg="rviz" type="rviz"
+        args="-d $(find smart_wheelchair)/config/pcl.rviz" />
+</launch>
