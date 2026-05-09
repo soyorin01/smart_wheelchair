@@ -63,30 +63,52 @@ smart_wheelchair/
 
 ## 📖 快速开始
 
-### 1. 安装依赖
+### 1. 创建工作空间并克隆代码
+对于刚来到本仓库的新手，首先需要创建一个全新的 ROS 工作空间，并将代码克隆到其中的 `src` 目录下：
 ```bash
-rosdep install --from-paths src --ignore-src -y
+# 1. 创建工作空间目录并进入 src
+mkdir -p ~/wheelchair_ws/src
+cd ~/wheelchair_ws/src
+
+# 2. 初始化工作空间 (可选)
+catkin_init_workspace
+
+# 3. 克隆本项目仓库
+git clone https://github.com/soyorin01/smart_wheelchair.git
+
+# 4. 退回到工作空间根目录
+cd ~/wheelchair_ws
 ```
 
-### 2. 构建工作空间
+### 2. 安装项目依赖
+编译前，请确保安装了所有被依赖的 ROS 功能包（如 gazebo、slam_gmapping、navigation、pcl_ros 等）。可以使用 `rosdep` 自动解析并安装：
 ```bash
+# 如果从未初始化过 rosdep，请先执行 sudo rosdep init 和 rosdep update
+rosdep install --from-paths src --ignore-src -r -y
+```
+
+### 3. 构建工作空间与环境配置
+```bash
+# 编译整个工作空间
 catkin_make
+
+# 加载环境变量（每次新开终端都需执行，或通过 echo "source ~/wheelchair_ws/devel/setup.bash" >> ~/.bashrc 写入系统配置）
 source devel/setup.bash
 ```
 
-### 3. 运行 SLAM 建图
+### 4. 运行 SLAM 建图
 ```bash
 roslaunch smart_wheelchair slam.launch
 ```
 *提示：可在此模式下使用控制台或手柄移动机器人，扫描完成后使用 `map_saver` 保存地图。*
 
-### 4. 运行自主导航
+### 5. 运行自主导航
 ```bash
 roslaunch smart_wheelchair navigation.launch
 ```
 *操作：在 RViz 中点击 "2D Nav Goal" 设置目标点，观察轮椅的避障规划。*
 
-### 5. 运行视觉识别与伺服跟随 (涵盖并打通了模块 1、2、3)
+### 6. 运行视觉识别与伺服跟随 (涵盖并打通了模块 1、2、3)
 首先请将目标道具（比如红蓝方块/瓶子等模型已经引入 Gazebo 中），然后打开本启动文件：
 ```bash
 roslaunch smart_wheelchair sim_env.launch                # 加载带有桌面与彩色目标的仿真世界
@@ -97,7 +119,7 @@ roslaunch smart_wheelchair vision_following.launch       # 启动三合一视觉
 ```
 *提示：运行后，`cv2.imshow` 将在本地桌面自动弹出 **灰度/滤波图**（模块1能力验证）、**识别包围盒**（模块2能力验证）和 **追踪锁定框**（模块3能力验证）。您可以用鼠标在 Gazebo 内拖拽物体测试底盘的跟随位移和自主停止效果。*
 
-### 6. 三维点云滤波与欧式聚类提取 (PCL 加分项)
+### 7. 三维点云滤波与欧式聚类提取 (PCL 加分项)
 ```bash
 roslaunch smart_wheelchair gazebo_pcl.launch
 ```
