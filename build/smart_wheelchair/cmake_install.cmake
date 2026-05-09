@@ -63,6 +63,8 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     "/home/soyorin/wheelchair_ws/src/smart_wheelchair/maps/"
     "/home/soyorin/wheelchair_ws/src/smart_wheelchair/param/"
     "/home/soyorin/wheelchair_ws/src/smart_wheelchair/config/"
+    "/home/soyorin/wheelchair_ws/src/smart_wheelchair/meshes/"
+    "/home/soyorin/wheelchair_ws/src/smart_wheelchair/model/"
     )
 endif()
 

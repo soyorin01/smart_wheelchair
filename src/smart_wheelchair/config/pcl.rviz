@@ -193,6 +193,32 @@ Visualization Manager:
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /object_markers
+      Name: ObjectMarkers
+      Namespaces:
+        object_boxes: true
+        object_centers: true
+        object_labels: true
+      Queue Size: 10
+      Value: true
+    - Alpha: 1
+      Arrow Length: 0.3
+      Axes Length: 0.3
+      Axes Radius: 0.03
+      Class: rviz/PoseArray
+      Color: 255; 25; 0
+      Enabled: true
+      Head Length: 0.07
+      Head Radius: 0.04
+      Name: ObjectClusters
+      Shaft Length: 0.2
+      Shaft Radius: 0.01
+      Shape: Arrow
+      Topic: /object_clusters
+      Unreliable: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48

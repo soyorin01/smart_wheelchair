@@ -23,4 +23,22 @@
   <!-- 发布 TF 变换 -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
+  <!-- 加载视觉模块测试用道具：桌子与瓶子 -->
+  <node name="spawn_table" pkg="gazebo_ros" type="spawn_model"
+        args="-file $(find smart_wheelchair)/model/table.model -urdf -model table
+              -x 3.0 -y 0.0 -z 0.0" />
+  <node name="spawn_green_bottle" pkg="gazebo_ros" type="spawn_model"
+        args="-file $(find smart_wheelchair)/model/bottles/green_bottle.model -urdf -model green_bottle
+              -x 3.0 -y 0.0 -z 1.0" />
+  <node name="spawn_red_bottle" pkg="gazebo_ros" type="spawn_model"
+        args="-file $(find smart_wheelchair)/model/bottles/red_bottle.model -urdf -model red_bottle
+              -x 3.15 -y 0.1 -z 1.0" />
+              
+  <!-- 加载简单的几何体 (用于视觉检测) -->
+  <node name="spawn_red_box" pkg="gazebo_ros" type="spawn_model"
+        args="-file $(find smart_wheelchair)/model/primitives/red_box.urdf -urdf -model red_box
+              -x 3.0 -y 0.3 -z 1.0" />
+  <node name="spawn_blue_cylinder" pkg="gazebo_ros" type="spawn_model"
+        args="-file $(find smart_wheelchair)/model/primitives/blue_cylinder.urdf -urdf -model blue_cylinder
+              -x 3.0 -y -0.3 -z 1.0" />
 </launch>

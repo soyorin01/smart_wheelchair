@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- 启动 模块 1：图像预处理节点 -->
+  <node pkg="smart_wheelchair" type="image_preprocess_node.py" name="image_preprocess_node" output="screen" />
+
+  <!-- 启动 模块 2：目标色彩识别检测节点 -->
+  <node pkg="smart_wheelchair" type="object_detection_node.py" name="object_detection_node" output="screen">
+    <param name="min_area" value="500" />
+  </node>
+
+  <!-- 启动 模块 3：视觉目标追踪与底盘控制跟随闭环节点 -->
+  <node pkg="smart_wheelchair" type="robot_following_node.py" name="robot_following_node" output="screen">
+    <!-- 可选用 CSRT 或 KCF -->
+    <param name="tracker_type" value="CSRT" />
+    <!-- 闭环 P-Controller 超参数 -->
+    <param name="kp_angular" value="0.005" />
+    <param name="kp_linear" value="0.00005" />
+    <!-- 目标安全距离阈值，面积达到此水平时不再前进 -->
+    <param name="target_area" value="25000" />
+  </node>
+</launch>

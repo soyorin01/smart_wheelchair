@@ -417,6 +417,30 @@
     <origin xyz="0 0 0.12" rpy="0 0 0"/>
   </joint>
 
+  <!-- ================== 深度相机光学坐标系 ================== -->
+  <!-- Gazebo 深度相机插件使用光学坐标系（Z=光轴向前，X=右，Y=下），
+       而 camera_link 的 Z 轴向上。添加 optical_frame 使 TF 自动处理旋转，
+       避免点云出现在 camera_link 的正上方。 -->
+  <link name="camera_depth_optical_frame">
+    <inertial>
+      <mass value="0.001"/>
+      <inertia ixx="0.000001" ixy="0" ixz="0"
+               iyy="0.000001" iyz="0"
+               izz="0.000001"/>
+    </inertial>
+  </link>
+
+  <joint name="camera_depth_optical_joint" type="fixed">
+    <parent link="camera_link"/>
+    <child link="camera_depth_optical_frame"/>
+    <!-- 旋转矩阵推导：
+         camera_link: X=前, Y=左, Z=上
+         optical:     X=右, Y=下, Z=前
+         optical_X = -camera_Y, optical_Y = -camera_Z, optical_Z = camera_X
+         对应 rpy = (-pi/2, 0, -pi/2) -->
+    <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708"/>
+  </joint>
+
   <!-- ================== Gazebo 插件与材质 ================== -->
   <gazebo>
     <plugin name="diff_drive" filename="libgazebo_ros_diff_drive.so">
@@ -530,7 +554,8 @@
         <depthImageTopicName>depth/image_raw</depthImageTopicName>
         <depthImageCameraInfoTopicName>depth/camera_info</depthImageCameraInfoTopicName>
         <pointCloudTopicName>depth/points</pointCloudTopicName>
-        <frameName>camera_link</frameName>
+        <!-- 【修复】frameName 改为 optical_frame，使点云坐标系正确 -->
+        <frameName>camera_depth_optical_frame</frameName>
         <distortionK1>0</distortionK1>
         <distortionK2>0</distortionK2>
         <distortionK3>0</distortionK3>

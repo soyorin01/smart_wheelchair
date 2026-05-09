@@ -19,9 +19,12 @@
   <!-- 发布 TF 变换（URDF 中所有 link/joint 的坐标关系） -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
-  <!-- 启动 PCL 点云处理节点：滤波 + 地面分割 + 聚类 -->
+  <!-- 启动 PCL 点云处理节点：滤波 + 地面分割 + 聚类 + 特征提取 -->
+  <!-- 可选输入源：/camera/depth/points (Gazebo原生) 或 /pointcloud_output (get_pointcloud.py反投影) -->
+  <arg name="input_topic" default="/camera/depth/points"/>
   <node name="pcl_process_node" pkg="smart_wheelchair" type="pcl_process_node"
         output="screen" launch-prefix="">
+    <param name="input_topic" value="$(arg input_topic)"/>
     <param name="voxel_leaf_size" value="0.02"/>
     <param name="pass_z_min" value="0.05"/>
     <param name="pass_z_max" value="3.0"/>

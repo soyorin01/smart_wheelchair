@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   joint_state_publisher_gui
   pcl_conversions
   pcl_ros
+  visualization_msgs
   robot_state_publisher
   rospy
   rviz
@@ -147,6 +148,7 @@ include_directories(
 add_executable(pcl_process_node src/pcl_process_node.cpp)
 target_link_libraries(pcl_process_node
   ${catkin_LIBRARIES}
+  ${PCL_LIBRARIES}
 )
 
 ## Rename C++ executable without prefix
@@ -200,7 +202,7 @@ catkin_install_python(PROGRAMS
 # )
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
-install(DIRECTORY launch/ worlds/ maps/ param/ config/
+install(DIRECTORY launch/ worlds/ maps/ param/ config/ meshes/ model/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
